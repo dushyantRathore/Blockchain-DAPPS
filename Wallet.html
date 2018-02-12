@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wallet</title>
+		<script type="text/javascript" src="/home/dushyant/Desktop/Blockchain/Dapp/web3.js/dist/web3.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type='text/javascript'>
+
+//0x1a2dd98cc3ab3178d8f6479044ee4259c9a89ee2
+//0xc8bbbd81faf7babca92e19285c09e747ad7758d8
+
+function Transact(){
+
+	var Web3 = require('web3');
+
+	if (typeof web3 !== 'undefined') {
+	  web3 = new Web3(web3.currentProvider);
+	} else {
+	  // set the provider you want from Web3.providers
+	  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+	}
+ 
+	var from = document.getElementsByName("from")[0].value;
+	var to = document.getElementsByName("to")[0].value;
+	var password = document.getElementsByName("password")[0].value;
+	var amount = document.getElementsByName("amount")[0].value;
+	var amount_wei = web3.toWei(amount, "ether");
+	var transaction_object = {"from" : from, "to" : to, "value" : amount_wei};
+
+	Response = "<h1><u>Result</u></h1><br>";
+
+	if (web3.personal.unlockAccount(from, password)){
+
+		web3.eth.sendTransaction(transaction_object, function(error, result){
+			if (error){
+				Response += error;
+			}else{
+				if(result){
+					Response += "Transaction Hash : " + result + "<br>";
+					var link = "https://ropsten.etherscan.io/tx/" + result;
+					Response += "Link : " + "<a href = 'https://ropsten.etherscan.io/tx/'" + result + ">" + link + "</a>"
+					console.log(Response);
+				}	
+			}
+		});
+	}
+
+	setTimeout(function() {
+	$("#result").append(Response);
+}, 3000);
+
+}
+
+</script>
+
+</head>
+<body>
+
+<h1><u>Send Ethers</u></h1>
+<br>
+<div id="transaction">
+	<label>From : </label>
+	<input type=text name="from" size="40">
+	<br>
+	<label>To : </label>
+	<input type=text name="to" size="40">
+	<br>
+	<label>Password : </label>
+	<input type="password" name="password">
+	<br>
+	<label>Amount (Ethers): </label>
+	<input type=text name="amount" size="">
+	<br>
+	<button id="submit" onclick="Transact();">Submit</button>
+
+<div id="result">
+</div>
+
+</body>
+</html>

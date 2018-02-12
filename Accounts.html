@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Main Page</title>
+	<script type="text/javascript" src="/home/dushyant/Desktop/Blockchain/Dapp/web3.js/dist/web3.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type='text/javascript'>
+
+function showDetails(){
+	var Web3 = require('web3');
+
+	if (typeof web3 !== 'undefined') {
+	  web3 = new Web3(web3.currentProvider);
+	} else {
+	  // set the provider you want from Web3.providers
+	  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+	}
+
+	var accounts = web3.eth.accounts;
+	var result = "<h1><u>Details</u></h1><br>"
+
+	for(var i = 0; i < accounts.length; i++){
+		result += "Account " + i + " : " + accounts[i] + "<br>";
+	}
+
+	var coinbase = web3.eth.coinbase;
+	result += "Coinbase : "  + coinbase;
+
+	$("#details").append(result);
+
+}
+
+</script>
+</head>
+<body>
+
+	<h1><u>Get Account Details</u></h1>
+	<br>
+	<button id="show_details" onclick="showDetails()">Show Details</button>
+
+	<div id="details"></div>
+
+</body>
+</html>

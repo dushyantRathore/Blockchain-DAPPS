@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Balance Details</title>
+	<script type="text/javascript" src="/home/dushyant/Desktop/Blockchain/Dapp/web3.js/dist/web3.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type='text/javascript'>
+
+function Display(){
+
+	var Web3 = require('web3');
+
+	if (typeof web3 !== 'undefined') {
+	  web3 = new Web3(web3.currentProvider);
+	} else {
+	  // set the provider you want from Web3.providers
+	  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+	}
+
+	var account_number = document.getElementsByName("account_number")[0].value;
+	var balance_wei = web3.eth.getBalance(account_number);
+	var balance_ether = web3.fromWei(balance_wei, 'ether').toFixed(2);
+
+	console.log("Account number : " + account_number);
+	console.log("Balance : "  + balance_ether);
+
+	var result = "<br><h1>Account Details</h1><br>" + "<b>Account Number : </b>" + account_number + "<br><b>Account Balance : </b>" + balance_ether + " ethers";
+	$("#balance").append(result); 
+
+}
+
+
+</script>
+</head>
+<body>
+
+<h1>Get Balance Details</h1>
+<br>
+
+<div id = "form">
+	<label>Enter account number : </label>
+	<input type="text" name="account_number" size="40">
+	<br><br>
+	<button id = "submit" onclick="Display();">Submit</button>
+</form>
+
+<div id="balance"></div>
+
+</body>
+</html>
